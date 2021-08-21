@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+       <input type="button" value="get" class="get">
+       <input type="button" value="post" class="post">
+      <div id="app">
+       <input type="button" value="笑话" @click="getJoke">{{joke}}
+    </div> 
+
+
+
+ <!--开发环境版本，包含了有帮助的命令行警告-->
+   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!--axios必须先导入才可以使用
+使用get或post方法即可发送对应的请求
+then方法中的回调函数会在请求成功或失败时触发
+铜锅回调函数的形参可以获取响应内容，或错误信息-->
+    <!--axios.get(地址？key=value&key2=value2).then(function(response){},function(err){})
+    axios.post(地址？{key=value(//参数对象)&key2=value2})).then(function(response){},function(err){})-->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"> </script>
+    <script>
+     document.querySelector('.get').onclick=function(){
+    //axios.get("https://autumnfish.cn/api/joke/list?num=4")
+    axios.get("https://autumnfish.cn/api/joke/list1234?num=4").then(function(response){
+        console.log(response);
+    },function(err){
+        console.log(err);
+    })
+
+    };
+    document.querySelector('.post').onclick=function(){
+        //axios.post("https://autumnfish.cn/api/user/reg",{username:"糖醋排骨"})
+axios.post("https://autumnfish.cn/api/user/reg1234",{username:"糖醋排骨"})
+        .then(function(response){
+            console.log(response);
+        },function(err){
+            console.log(err);
+        })
+    };
+//axios回调函数中的this已经改变，无法访问到data中的数据
+//把this保存起来，回调函数中直接使用保存的this即可
+//和本地应用的最大区别就是改变了数据来源
+    var app = new Vue({
+        el:"#app",
+        data:{
+            joke:"很好笑的笑话"
+        },
+        methods:{
+getJoke:function(){
+    var that=this;
+    axios.get("https://autumnfish.cn/api/joke").then(function(response){
+        that.joke=response.data;
+        console.log(response);
+        console.log(that.joke);
+    },
+    function(err){
+        console.log(err);
+    })
+}
+        }
+
+    })
+
+    </script>
+</body>
+</html>
